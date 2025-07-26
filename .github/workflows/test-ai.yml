@@ -1,0 +1,26 @@
+name: Test AI Features
+on:
+  pull_request:
+    branches: [ main ]
+  push:
+    branches: [ main ]
+
+jobs:
+  test-ai:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          
+      - name: Run Glassbox Tests
+        uses: ./.github/actions/glassbox-test
+        with:
+          test-directory: '.glassbox/tests'
+          model: 'local'
+          output-format: 'json'
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
